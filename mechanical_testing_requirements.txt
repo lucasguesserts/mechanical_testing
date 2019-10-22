@@ -1,5 +1,7 @@
+# This file may be created using:
+# $ conda list -e > mechanical_testing_requirements.txt
 # This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
+# $ conda create --name mechanical_testing --file mechanical_testing_requirements.txt
 # platform: linux-64
 _libgcc_mutex=0.1=main
 astroid=2.3.2=py37_0
