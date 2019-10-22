@@ -1,5 +1,9 @@
 # Mechanical Testing
 
+Master: [![Master](https://travis-ci.org/lucasguesserts/mechanical_testing.svg?branch=master)](https://travis-ci.org/lucasguesserts/mechanical_testing)
+
+Develop: [![Develop](https://travis-ci.org/lucasguesserts/mechanical_testing.svg?branch=develop)](https://travis-ci.org/lucasguesserts/mechanical_testing)
+
 Set of tools for processing the data of mechanical testings.
 
 ## Requirements
