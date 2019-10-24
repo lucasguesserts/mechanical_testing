@@ -26,6 +26,7 @@ def test_read_csv(tensile):
 
 def test_dimensions(tensile, dimensions):
 	length, diameter = dimensions
-	assert tensile.length == pytest.approx(length, rel=1E-10)
+	assert tensile.length   == pytest.approx(length, rel=1E-10)
 	assert tensile.diameter == pytest.approx(diameter, rel=1E-10)
+	assert tensile.area     == pytest.approx(np.pi * (diameter**2) / 4, rel=1E-10)
 	return

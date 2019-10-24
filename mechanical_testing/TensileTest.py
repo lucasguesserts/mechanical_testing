@@ -19,5 +19,5 @@ class TensileTest:
 	def _defineDimensions(self, length, diameter):
 		self.length = length
 		self.diameter = diameter
-		self.area = np.pi * diameter**2 / 4
+		self.area = np.pi * (diameter**2) / 4
 		return
