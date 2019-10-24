@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import scipy.optimize
 import copy
 
 class TensileTest:
@@ -7,6 +8,7 @@ class TensileTest:
 		self._readFromFile(file)
 		self._defineDimensions(length, diameter)
 		self._defineStrainStress()
+		self._defineElasticModulusAndProportionalityLimit()
 		return
 
 	def _readFromFile(self, file):
@@ -26,4 +28,27 @@ class TensileTest:
 	def _defineStrainStress(self):
 		self.strain = self.displacement / self.length
 		self.stress = self.force / self.area
+		return
+
+	def _defineElasticModulusAndProportionalityLimit(self):
+		# Find proportionality limit location
+		# TODO: substitute this piece of code
+		# by calling scipy.optimize.brute
+		minimumResidual = +np.infty
+		for length in np.arange(10, len(self.stress)):
+			polynomial, fullResidual = np.polyfit(
+				x = self.strain[:length],
+				y = self.stress[:length],
+				deg = 1,
+				cov = True,
+			)
+			residual = np.sqrt(np.diag(fullResidual)[0])
+			if residual < minimumResidual:
+				minimumResidual = residual
+				proportionalityLimitLocation = length
+				angularCoefficient = polynomial[0]
+		# Set values
+		self.proportionalityStrength      = self.stress[proportionalityLimitLocation]
+		self.propotionalityStrain         = self.strain[proportionalityLimitLocation]
+		self.elasticModulus               = angularCoefficient
 		return

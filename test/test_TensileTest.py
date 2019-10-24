@@ -39,3 +39,12 @@ def test_strain_stress(tensile, dimensions):
 	assert tensile.strain[maxLocation] == pytest.approx(0.0013913/length, rel=1E-12)
 	assert tensile.stress[maxLocation] == pytest.approx(74715.3/area,     rel=1E-12)
 	return
+
+def test_elastic_modulus(tensile):
+	assert tensile.elasticModulus == pytest.approx(258.33E+9, rel=1E-2)
+	return
+
+def test_proportionalit_limit(tensile):
+	assert tensile.proportionalityStrength == pytest.approx(462.43E+6, rel=1E-2)
+	assert tensile.propotionalityStrain    == pytest.approx(0.17992E-2)
+	return
