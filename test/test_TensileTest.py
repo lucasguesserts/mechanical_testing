@@ -63,3 +63,7 @@ def test_ultimate_strength(tensile):
 	assert tensile.ultimateStrain   == pytest.approx(1.86E-2,   rel=1E-2)
 	assert tensile.ultimateStrength == pytest.approx(951.30E+6, rel=1E-2)
 	return
+
+def test_toughness_modulus(tensile):
+	assert tensile.toughnessModulus == pytest.approx(1.916E+7, rel=1E-3)
+	return

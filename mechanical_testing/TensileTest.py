@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import scipy.optimize
+import scipy.integrate
 import copy
 
 class TensileTest:
@@ -11,6 +11,7 @@ class TensileTest:
 		self._defineElasticModulusAndProportionalityLimit()
 		self._defineYieldStrength()
 		self._defineUltimateStrength()
+		self._defineToughnessModulus()
 		return
 
 	def _readFromFile(self, file):
@@ -68,4 +69,8 @@ class TensileTest:
 		ultimateLocation      = np.argmax(self.stress)
 		self.ultimateStrain   = self.strain[ultimateLocation]
 		self.ultimateStrength = self.stress[ultimateLocation]
+		return
+
+	def _defineToughnessModulus(self):
+		self.toughnessModulus = scipy.integrate.trapz(x=self.strain, y=self.stress)
 		return
