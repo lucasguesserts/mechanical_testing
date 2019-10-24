@@ -10,6 +10,7 @@ class TensileTest:
 		self._defineStrainStress()
 		self._defineElasticModulusAndProportionalityLimit()
 		self._defineYieldStrength()
+		self._defineUltimateStrength()
 		return
 
 	def _readFromFile(self, file):
@@ -61,4 +62,10 @@ class TensileTest:
 
 	def _defineYieldStrength(self):
 		self.yieldStrain, self.yieldStrength = self.offsetYieldPoint(0.2E-2)
+		return
+
+	def _defineUltimateStrength(self):
+		ultimateLocation      = np.argmax(self.stress)
+		self.ultimateStrain   = self.strain[ultimateLocation]
+		self.ultimateStrength = self.stress[ultimateLocation]
 		return

@@ -58,3 +58,8 @@ def test_yield_point(tensile):
 	assert tensile.yieldStrain   == pytest.approx(0.50E-2,   rel=1E-2)
 	assert tensile.yieldStrength == pytest.approx(765.22E+6, rel=1E-2)
 	return
+
+def test_ultimate_strength(tensile):
+	assert tensile.ultimateStrain   == pytest.approx(1.86E-2,   rel=1E-2)
+	assert tensile.ultimateStrength == pytest.approx(951.30E+6, rel=1E-2)
+	return
