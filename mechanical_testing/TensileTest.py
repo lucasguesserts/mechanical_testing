@@ -9,6 +9,7 @@ class TensileTest:
 		self._defineDimensions(length, diameter)
 		self._defineStrainStress()
 		self._defineElasticModulusAndProportionalityLimit()
+		self._defineYieldStrength()
 		return
 
 	def _readFromFile(self, file):
@@ -51,4 +52,13 @@ class TensileTest:
 		self.proportionalityStrength      = self.stress[proportionalityLimitLocation]
 		self.propotionalityStrain         = self.strain[proportionalityLimitLocation]
 		self.elasticModulus               = angularCoefficient
+		return
+
+	def offsetYieldPoint(self, n):
+		elasticLine = lambda n: self.elasticModulus * ( self.strain - n )
+		intersection = np.argwhere(self.stress - elasticLine(n) < 0).flatten()[0]
+		return self.strain[intersection], self.stress[intersection]
+
+	def _defineYieldStrength(self):
+		self.yieldStrain, self.yieldStrength = self.offsetYieldPoint(0.2E-2)
 		return

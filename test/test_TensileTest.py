@@ -48,3 +48,13 @@ def test_proportionalit_limit(tensile):
 	assert tensile.proportionalityStrength == pytest.approx(462.43E+6, rel=1E-2)
 	assert tensile.propotionalityStrain    == pytest.approx(0.17992E-2)
 	return
+
+def test_offset_yield_point(tensile):
+	assert tensile.offsetYieldPoint(0.2E-2) == pytest.approx([0.50E-2, 765.22E+6], rel=1E-2)
+	assert tensile.offsetYieldPoint(0.4E-2) == pytest.approx([0.73E-2, 849.64E+6], rel=1E-2)
+	return
+
+def test_yield_point(tensile):
+	assert tensile.yieldStrain   == pytest.approx(0.50E-2,   rel=1E-2)
+	assert tensile.yieldStrength == pytest.approx(765.22E+6, rel=1E-2)
+	return
