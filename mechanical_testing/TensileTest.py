@@ -6,6 +6,7 @@ class TensileTest:
 	def __init__(self, file, length, diameter):
 		self._readFromFile(file)
 		self._defineDimensions(length, diameter)
+		self._defineStrainStress()
 		return
 
 	def _readFromFile(self, file):
@@ -20,4 +21,9 @@ class TensileTest:
 		self.length = length
 		self.diameter = diameter
 		self.area = np.pi * (diameter**2) / 4
+		return
+
+	def _defineStrainStress(self):
+		self.strain = self.displacement / self.length
+		self.stress = self.force / self.area
 		return
