@@ -11,6 +11,10 @@ class TensileTest:
 		self._defineElasticModulusAndProportionalityLimit()
 		self._defineYieldStrength()
 		self._defineUltimateStrength()
+		self._defineElasticBehavior()
+		self._definePlasticBehavior()
+		self._defineNeckingBehavior()
+		self._defineResilienceModulus()
 		self._defineToughnessModulus()
 		return
 
@@ -69,6 +73,28 @@ class TensileTest:
 		ultimateLocation      = np.argmax(self.stress)
 		self.ultimateStrain   = self.strain[ultimateLocation]
 		self.ultimateStrength = self.stress[ultimateLocation]
+		return
+
+	def _defineElasticBehavior(self):
+		elasticBehavior = (self.strain < self.yieldStrain)
+		self.elasticStrain = self.strain[elasticBehavior]
+		self.elasticStress = self.stress[elasticBehavior]
+		return
+
+	def _definePlasticBehavior(self):
+		plasticBehavior = (self.yieldStrain < self.strain) & (self.strain < self.ultimateStrain)
+		self.plasticStrain = self.strain[plasticBehavior]
+		self.plasticStress = self.stress[plasticBehavior]
+		return
+
+	def _defineNeckingBehavior(self):
+		neckingBehavior = (self.ultimateStrain < self.strain)
+		self.neckingStrain = self.strain[neckingBehavior]
+		self.neckingStress = self.stress[neckingBehavior]
+		return
+
+	def _defineResilienceModulus(self):
+		self.resilienceModulus = scipy.integrate.trapz(x=self.elasticStrain, y=self.elasticStress)
 		return
 
 	def _defineToughnessModulus(self):

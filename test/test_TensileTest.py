@@ -64,6 +64,31 @@ def test_ultimate_strength(tensile):
 	assert tensile.ultimateStrength == pytest.approx(951.30E+6, rel=1E-2)
 	return
 
+def test_elastic_behavior(tensile):
+	assert tensile.elasticStrain[ 0] == pytest.approx(0.0)
+	assert tensile.elasticStress[ 0] == pytest.approx(0.0)
+	assert tensile.elasticStrain[-1] == pytest.approx(tensile.yieldStrain, rel=1E-2)
+	assert tensile.elasticStress[-1] == pytest.approx(tensile.yieldStrength, rel=1E-2)
+	return
+
+def test_plastic_behavior(tensile):
+	assert tensile.plasticStrain[ 0] == pytest.approx(tensile.yieldStrain, rel=1E-2)
+	assert tensile.plasticStress[ 0] == pytest.approx(tensile.yieldStrength, rel=1E-2)
+	assert tensile.plasticStrain[-1] == pytest.approx(tensile.ultimateStrain, rel=1E-2)
+	assert tensile.plasticStress[-1] == pytest.approx(tensile.ultimateStrength, rel=1E-2)
+	return
+
+def test_necking_behavior(tensile):
+	assert tensile.neckingStrain[ 0] == pytest.approx(tensile.ultimateStrain, rel=1E-2)
+	assert tensile.neckingStress[ 0] == pytest.approx(tensile.ultimateStrength, rel=1E-2)
+	assert tensile.neckingStrain[-1] == pytest.approx(tensile.strain[-1], rel=1E-10)
+	assert tensile.neckingStress[-1] == pytest.approx(tensile.stress[-1], rel=1E-10)
+	return
+
+def test_resilience_modulus(tensile):
+	assert tensile.resilienceModulus == pytest.approx(2.464E+6, rel=1E-3)
+	return
+
 def test_toughness_modulus(tensile):
 	assert tensile.toughnessModulus == pytest.approx(1.916E+7, rel=1E-3)
 	return
