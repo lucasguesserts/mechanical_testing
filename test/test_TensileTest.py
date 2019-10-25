@@ -92,3 +92,11 @@ def test_resilience_modulus(tensile):
 def test_toughness_modulus(tensile):
 	assert tensile.toughnessModulus == pytest.approx(1.916E+7, rel=1E-3)
 	return
+
+def test_real_curve(tensile):
+	ultimateLocation = np.argmax(tensile.realStress)
+	ultimateRealStrain = tensile.realStrain[ultimateLocation]
+	ultimateRealStress = tensile.realStress[ultimateLocation]
+	assert ultimateRealStrain == pytest.approx(1.90E-2,   rel=1E-2)
+	assert ultimateRealStress == pytest.approx(969.25E+6, rel=1E-2)
+	return

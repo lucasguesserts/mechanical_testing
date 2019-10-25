@@ -7,7 +7,8 @@ class TensileTest:
 	def __init__(self, file, length, diameter):
 		self._readFromFile(file)
 		self._defineDimensions(length, diameter)
-		self._defineStrainStress()
+		self._defineEngineeringCurve()
+		self._defineRealCurve()
 		self._defineElasticModulusAndProportionalityLimit()
 		self._defineYieldStrength()
 		self._defineUltimateStrength()
@@ -32,7 +33,7 @@ class TensileTest:
 		self.area = np.pi * (diameter**2) / 4
 		return
 
-	def _defineStrainStress(self):
+	def _defineEngineeringCurve(self):
 		self.strain = self.displacement / self.length
 		self.stress = self.force / self.area
 		return
@@ -99,4 +100,9 @@ class TensileTest:
 
 	def _defineToughnessModulus(self):
 		self.toughnessModulus = scipy.integrate.trapz(x=self.strain, y=self.stress)
+		return
+
+	def _defineRealCurve(self):
+		self.realStrain = np.log(1 + self.strain)
+		self.realStress = self.stress * (1 + self.strain)
 		return
