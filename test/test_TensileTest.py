@@ -1,4 +1,5 @@
 import pytest
+import warnings
 import numpy as np
 import pandas as pd
 import os
@@ -136,4 +137,19 @@ def test_save_summary_of_properties(tensile):
 	tensile.saveSummaryOfProperties(fileName)
 	assert os.path.isfile(fileName)
 	os.remove(fileName)
+	return
+
+def test_plot(tensile):
+	# Since it is a visual inspection, no assertion
+	# will be done. Instead, the output files will
+	# be placed in a specific folder for manual
+	# inspection.
+	saveFolder = 'test/data/plots/'
+	os.makedirs(saveFolder, exist_ok=True)
+	fileName = 'steel_1045.png'
+	filePath = saveFolder + fileName
+	title = 'Steel 1045'
+	tensile.plot(title, filePath)
+	assert os.path.isfile(filePath)
+	warnings.warn('Check the quality of the file \"{}\" manually.'.format(filePath))
 	return
