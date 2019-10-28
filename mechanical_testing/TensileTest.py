@@ -146,3 +146,10 @@ class TensileTest:
 				['Strain Hardening Exponent', self.strainHardeningExponent, '-'    ],
 			],
 		)
+
+	def saveSummaryOfProperties(self, fileName):
+		self.summaryOfProperties().to_csv(
+			path_or_buf = fileName,
+			index = False,
+		)
+		return

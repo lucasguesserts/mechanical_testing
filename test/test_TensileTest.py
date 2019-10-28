@@ -1,6 +1,7 @@
 import pytest
 import numpy as np
 import pandas as pd
+import os
 import mechanical_testing as mect
 
 @pytest.fixture(scope="module")
@@ -128,4 +129,11 @@ def test_properties_summary(tensile):
 	assert (summaryOfProperties['Property'] == materialProperties['Property']).all()
 	assert np.array(summaryOfProperties['Value']) == pytest.approx(np.array(materialProperties['Value']), rel=1E-2)
 	assert (summaryOfProperties['Unit'] == materialProperties['Unit']).all()
+	return
+
+def test_save_summary_of_properties(tensile):
+	fileName = '.summaryOfProperties.csv'
+	tensile.saveSummaryOfProperties(fileName)
+	assert os.path.isfile(fileName)
+	os.remove(fileName)
 	return
