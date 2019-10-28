@@ -10,7 +10,6 @@ def dimensions():
 
 @pytest.fixture(scope="module")
 def tensile(dimensions):
-	print(dimensions)
 	return mect.TensileTest(
 		'./test/data/tensile/tensile_steel_1045.csv',
 		*dimensions,
@@ -99,4 +98,9 @@ def test_real_curve(tensile):
 	ultimateRealStress = tensile.realStress[ultimateLocation]
 	assert ultimateRealStrain == pytest.approx(1.90E-2,   rel=1E-2)
 	assert ultimateRealStress == pytest.approx(969.25E+6, rel=1E-2)
+	return
+
+def test_hardening(tensile):
+	assert tensile.strengthCoefficient == pytest.approx(1986.56E+6, rel=1E-1)
+	assert tensile.strainHardeningExponent == pytest.approx(0.1712, rel=1E-4)
 	return

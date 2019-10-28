@@ -17,6 +17,7 @@ class TensileTest:
 		self._defineNeckingBehavior()
 		self._defineResilienceModulus()
 		self._defineToughnessModulus()
+		self._defineHardening()
 		return
 
 	def _readFromFile(self, file):
@@ -102,7 +103,28 @@ class TensileTest:
 		self.toughnessModulus = scipy.integrate.trapz(x=self.strain, y=self.stress)
 		return
 
+	@staticmethod
+	def _engineering2real(strain, stress):
+		realStrain = np.log(1 + strain)
+		realStress = stress * (1 + strain)
+		return realStrain, realStress
+
 	def _defineRealCurve(self):
-		self.realStrain = np.log(1 + self.strain)
-		self.realStress = self.stress * (1 + self.strain)
+		self.realStrain, self.realStress = TensileTest._engineering2real(
+			self.strain,
+			self.stress
+		)
+		return
+
+	def _defineHardening(self):
+		hollomons_equation = lambda strain, K, n: K * strain**n
+		realStrain, realStress = TensileTest._engineering2real(self.plasticStrain, self.plasticStress)
+		(K, n), _ = scipy.optimize.curve_fit(
+			hollomons_equation,
+			xdata = realStrain,
+			ydata = realStress,
+			p0 = [124.6E+6, 0.19] # typical values
+		)
+		self.strengthCoefficient     = K
+		self.strainHardeningExponent = n
 		return
