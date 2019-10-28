@@ -1,5 +1,6 @@
 import pytest
 import numpy as np
+import pandas as pd
 import mechanical_testing as mect
 
 @pytest.fixture(scope="module")
@@ -45,7 +46,7 @@ def test_elastic_modulus(tensile):
 
 def test_proportionalit_limit(tensile):
 	assert tensile.proportionalityStrength == pytest.approx(462.43E+6, rel=1E-2)
-	assert tensile.propotionalityStrain    == pytest.approx(0.17992E-2)
+	assert tensile.proportionalityStrain    == pytest.approx(0.17992E-2)
 	return
 
 def test_offset_yield_point(tensile):
@@ -101,6 +102,30 @@ def test_real_curve(tensile):
 	return
 
 def test_hardening(tensile):
-	assert tensile.strengthCoefficient == pytest.approx(1986.56E+6, rel=1E-1)
-	assert tensile.strainHardeningExponent == pytest.approx(0.1712, rel=1E-4)
+	assert tensile.strengthCoefficient == pytest.approx(1977.97E+6, rel=1E-4)
+	assert tensile.strainHardeningExponent == pytest.approx(1.712E-1, rel=1E-4)
+	return
+
+def test_properties_summary(tensile):
+	# Compilation of all the values in the tests above.
+	materialProperties = pd.DataFrame(
+			columns = ['Property', 'Value', 'Unit'],
+			data = [
+				['Elastic Modulus',           258.33E+9,  'Pa'   ],
+				['Proportionality Strain',    0.17992E-2, '-'    ],
+				['Proportionality Strength',  462.43E+6,  'Pa'   ],
+				['Yield Strain',              0.50E-2,    '-'    ],
+				['Yield Strength',            765.22E+6,  'Pa'   ],
+				['Ultimate Strain',           1.86E-2,    '-'    ],
+				['Ultimate Strength',         951.30E+6,  'Pa'   ],
+				['Resilience Modulus',        2.464E+6,   'J/m^3'],
+				['Toughness Modulus',         1.916E+7,   'J/m^3'],
+				['Strength Coefficient',      1977.97E+6, 'Pa'   ],
+				['Strain Hardening Exponent', 1.712E-1,   '-'    ],
+			],
+		)
+	summaryOfProperties = tensile.summaryOfProperties()
+	assert (summaryOfProperties['Property'] == materialProperties['Property']).all()
+	assert np.array(summaryOfProperties['Value']) == pytest.approx(np.array(materialProperties['Value']), rel=1E-2)
+	assert (summaryOfProperties['Unit'] == materialProperties['Unit']).all()
 	return

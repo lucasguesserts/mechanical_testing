@@ -58,7 +58,7 @@ class TensileTest:
 				angularCoefficient = polynomial[0]
 		# Set values
 		self.proportionalityStrength      = self.stress[proportionalityLimitLocation]
-		self.propotionalityStrain         = self.strain[proportionalityLimitLocation]
+		self.proportionalityStrain        = self.strain[proportionalityLimitLocation]
 		self.elasticModulus               = angularCoefficient
 		return
 
@@ -128,3 +128,21 @@ class TensileTest:
 		self.strengthCoefficient     = K
 		self.strainHardeningExponent = n
 		return
+
+	def summaryOfProperties(self):
+		return pd.DataFrame(
+			columns = ['Property', 'Value', 'Unit'],
+			data = [
+				['Elastic Modulus',           self.elasticModulus,          'Pa'   ],
+				['Proportionality Strain',    self.proportionalityStrain,   '-'    ],
+				['Proportionality Strength',  self.proportionalityStrength, 'Pa'   ],
+				['Yield Strain',              self.yieldStrain,             '-'    ],
+				['Yield Strength',            self.yieldStrength,           'Pa'   ],
+				['Ultimate Strain',           self.ultimateStrain,          '-'    ],
+				['Ultimate Strength',         self.ultimateStrength,        'Pa'   ],
+				['Resilience Modulus',        self.resilienceModulus,       'J/m^3'],
+				['Toughness Modulus',         self.toughnessModulus,        'J/m^3'],
+				['Strength Coefficient',      self.strengthCoefficient,     'Pa'   ],
+				['Strain Hardening Exponent', self.strainHardeningExponent, '-'    ],
+			],
+		)
