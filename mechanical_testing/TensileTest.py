@@ -171,7 +171,6 @@ class TensileTest:
 		ax.plot(100*self.ultimateStrain, self.ultimateStrength/1E+6, color='k', marker='*', linestyle=None, label='Ultimate\nStrength')
 		# Curve Fit
 		ax.plot(100*self.elasticStrain, np.polyval([self.elasticModulus,0], self.elasticStrain)/1E+6, linestyle='-.', color='gray', label='Elastic\nCurve Fit')
-		ax.plot(100*self.plasticStrain, self.strengthCoefficient*self.plasticStrain**self.strainHardeningExponent/1E+6, linestyle='--', color='gray', label='Hollomon\'s\nCurve Fit')
 		# Layout
 		ax.set_xlim([0, 1.45*np.amax(100*self.strain)])
 		ax.set_ylim([0, 1.1*self.ultimateStrength/1E+6])

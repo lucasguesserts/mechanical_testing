@@ -4,3 +4,5 @@
 *.pytest_cache*
 *.vscode*
 test/data/plots/*
+scripts/*
+!scripts/*.py

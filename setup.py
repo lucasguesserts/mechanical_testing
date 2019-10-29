@@ -11,5 +11,9 @@ setup(
     zip_safe=False,
     install_requires=[
         'pytest',
+        'numpy',
+        'scipy',
+        'matplotlib',
+        'pandas',
     ]
 )
