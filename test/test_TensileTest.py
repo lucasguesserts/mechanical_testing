@@ -153,3 +153,18 @@ def test_plot(tensile):
 	assert os.path.isfile(filePath)
 	warnings.warn('Check the quality of the file \"{}\" manually.'.format(filePath))
 	return
+
+def test_real_plot(tensile):
+	# Since it is a visual inspection, no assertion
+	# will be done. Instead, the output files will
+	# be placed in a specific folder for manual
+	# inspection.
+	saveFolder = 'test/data/plots/'
+	os.makedirs(saveFolder, exist_ok=True)
+	fileName = 'steel_1045_real_curve.png'
+	filePath = saveFolder + fileName
+	title = 'Steel 1045'
+	tensile.plotRealCurve(title, filePath)
+	assert os.path.isfile(filePath)
+	warnings.warn('Check the quality of the file \"{}\" manually.'.format(filePath))
+	return

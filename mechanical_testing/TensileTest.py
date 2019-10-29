@@ -187,3 +187,40 @@ class TensileTest:
 		fig.savefig(fileName)
 		plt.close(fig)
 		return
+
+	def plotRealCurve(self, title, fileName):
+		fig = plt.figure(figsize=(8,8))
+		ax = fig.add_subplot(1,1,1)
+		def ax_plot(strain, stress, **kwargs):
+			realStrain, realStress = TensileTest._engineering2real(strain, stress)
+			ax.plot(100*realStrain, realStress/1E+6, **kwargs)
+			return
+		# Engineering Curve
+		ax.plot(100*self.strain, self.stress/1E+6, linestyle=':', color='k', alpha=0.75, label='Engineering\nCurve')
+		# Relevant Regions
+		ax_plot(self.elasticStrain, self.elasticStress, linestyle='-', color='b', label='Elastic\nRegion')
+		ax_plot(self.plasticStrain, self.plasticStress, linestyle='-', color='y', label='Plastic\nRegion')
+		ax_plot(self.neckingStrain, self.neckingStress, linestyle='-', color='r', label='Necking\nRegion')
+		# Relevant Points
+		ax_plot(self.proportionalityStrain, self.proportionalityStrength, color='k', marker='o', linestyle=None, label='Proportionality\nLimit')
+		ax_plot(self.yieldStrain, self.yieldStrength, color='k', marker='x', linestyle=None, label='Yield\nStrength')
+		ax_plot(self.ultimateStrain, self.ultimateStrength, color='k', marker='*', linestyle=None, label='Ultimate\nStrength')
+		# Curve Fit
+		ax_plot(self.elasticStrain, np.polyval([self.elasticModulus,0], self.elasticStrain), linestyle='-.', color='gray', label='Elastic\nCurve Fit')
+		ax.plot(100*np.log(1+self.plasticStrain), self.strengthCoefficient*np.log(1+self.plasticStrain)**self.strainHardeningExponent/1E+6, linestyle='--', color='gray', label='Hollomon\'s\nCurve Fit')
+		# Layout
+		ax.set_xlim([0, 1.45*np.amax(100*self.strain)])
+		ax.set_ylim([0, 1.1*self.ultimateStrength/1E+6])
+		ax.set_xlabel('Strain [%]')
+		ax.set_ylabel('Stress [MPa]')
+		ax.legend(loc='upper right')
+		ax.set_title('Real Curve - ' + title)
+		ax.grid(which='major', axis='x', linestyle='--', color='gray', alpha=0.75)
+		ax.grid(which='minor', axis='x', linestyle='--', color='gray', alpha=0.50)
+		ax.grid(which='major', axis='y', linestyle='--', color='gray', alpha=0.75)
+		ax.grid(which='minor', axis='y', linestyle='--', color='gray', alpha=0.50)
+		# Save
+		fig.tight_layout()
+		fig.savefig(fileName)
+		plt.close(fig)
+		return

@@ -20,4 +20,5 @@ for experimentFile in experimentFiles:
     rootName = experimentFile.split('/')[-1].replace('.csv','')
     tensile = mect.TensileTest(experimentalDataDir+experimentFile, length, diameter)
     tensile.plot(rootName, saveDir+rootName+'.png')
+    tensile.plotRealCurve(rootName, saveDir+rootName+'_real_curve'+'.png')
     tensile.saveSummaryOfProperties(saveDir+rootName+'.csv')
