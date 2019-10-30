@@ -3,6 +3,8 @@ import pandas as pd
 import scipy.integrate
 import matplotlib.pyplot as plt
 import copy
+import warnings
+
 
 plt.rcParams['font.family'] = 'Arial'
 plt.rcParams['font.size'] = 12
@@ -16,6 +18,7 @@ class TensileTest:
 		self._defineElasticModulusAndProportionalityLimit()
 		self._defineYieldStrength()
 		self._defineUltimateStrength()
+		self._correctYieldStrength()
 		self._defineElasticBehavior()
 		self._definePlasticBehavior()
 		self._defineNeckingBehavior()
@@ -26,6 +29,7 @@ class TensileTest:
 
 	def _readFromFile(self, file):
 		df = pd.read_csv(filepath_or_buffer=file)
+		self.originalFile = file
 		self.force        = copy.deepcopy(np.array(df['force']).flatten())
 		self.displacement = copy.deepcopy(np.array(df['displacement']).flatten())
 		self.time         = copy.deepcopy(np.array(df['time']).flatten())
@@ -79,6 +83,13 @@ class TensileTest:
 		ultimateLocation      = np.argmax(self.stress)
 		self.ultimateStrain   = self.strain[ultimateLocation]
 		self.ultimateStrength = self.stress[ultimateLocation]
+		return
+
+	def _correctYieldStrength(self):
+		if self.yieldStrain > self.ultimateStrain:
+			self.yieldStrain   = self.proportionalityStrain
+			self.yieldStrength = self.proportionalityStrength
+			warnings.warn('Yield strength corrected in file \"{:s}\"'.format(self.originalFile))
 		return
 
 	def _defineElasticBehavior(self):
