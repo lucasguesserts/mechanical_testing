@@ -12,5 +12,5 @@ install:
   - conda activate mechanical_testing
 
 script:
-  - py.test
+  - pytest --cov=./
   - codecov
