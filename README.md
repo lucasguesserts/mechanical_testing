@@ -2,9 +2,10 @@
 
 ![Travis (.org) branch](https://img.shields.io/travis/lucasguesserts/mechanical_testing/master?label=Master)
 ![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/master?label=Master%20coverage)
+![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lucasguesserts/mechanical_testing?label=LGTM%20alerts)
+![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/lucasguesserts/mechanical_testing)
 
 ![Travis (.org) branch](https://img.shields.io/travis/lucasguesserts/mechanical_testing/develop?label=Develop)
-![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/codecov?label=Develop%20coverage)
 
 Set of tools for processing the data of mechanical testings.
 
