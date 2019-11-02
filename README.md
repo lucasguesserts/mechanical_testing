@@ -1,8 +1,10 @@
 # Mechanical Testing
 
-Master: [![Master](https://travis-ci.org/lucasguesserts/mechanical_testing.svg?branch=master)](https://travis-ci.org/lucasguesserts/mechanical_testing)
+![Travis (.org) branch](https://img.shields.io/travis/lucasguesserts/mechanical_testing/master?label=Master)
+![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/master?label=Master%20coverage)
 
-Develop: [![Develop](https://travis-ci.org/lucasguesserts/mechanical_testing.svg?branch=develop)](https://travis-ci.org/lucasguesserts/mechanical_testing)
+![Travis (.org) branch](https://img.shields.io/travis/lucasguesserts/mechanical_testing/develop?label=Develop)
+![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/codecov?label=Develop%20coverage)
 
 Set of tools for processing the data of mechanical testings.
 
