@@ -5,11 +5,127 @@ import matplotlib.pyplot as plt
 import copy
 import warnings
 
-
 plt.rcParams['font.family'] = 'Arial'
 plt.rcParams['font.size'] = 12
 
 class TensileTest:
+	'''Process tensile testing data.
+
+	Load a tensile test data and process it
+	in order to deliver the material
+	properties.
+
+	Warning
+	-------
+	All values are meant to be in the SI
+	units. Since no unit conversion is made,
+	the input data has to be in the SI
+	units.
+
+	Attributes
+	----------
+	originalFile : str
+		Path to the file from which the data was read.
+	force : numpy.ndarray
+		Force data from the tensile test.
+	displacement : numpy.ndarray
+		Displacement data from the tensile test.
+	time : numpy.ndarray
+		Time instant data from the tensile test.
+	length : float
+		Gage length of the specimen.
+	diameter : float
+		Diameter of the specimen.
+	area : float
+		Cross section area of the specimen.
+		:math:`A = \dfrac{\pi \ D}{4}`
+		being :math:`D` the diameter of the
+		specimen.
+	strain : numpy.ndarray
+		Strain data of the tensile test.
+		:math:`\varepsilon = \dfrac{l - l_0}{l_0} = \dfrac{d}{l_0}`
+		being :math:`l_0` the initial length.
+	stress : numpy.ndarray
+		Stress data of the tensile test.
+		:math:`\sigma = \dfrac{F}{A}`
+		being :math:`F` the force and
+		:math:`A` the cross section area.
+	realStrain : numpy.ndarray
+		Strain for the real curve.
+		:math:`\varepsilon_{real} = ln(1 + \varepsilon).
+	realStress : numpy.ndarray
+		Stress for the real curve.
+		:math:`\sigma_{real} = \sigma \ (1 + \varepsilon).
+	proportionalityStrain, proportionalityStrength : float
+		Stress and strain values at the proportionality
+		limit point.
+	yieldStrain, yieldStrength : float
+		Stress and strain values at the yield point.
+	ultimateStrain, ultimateStrength : float
+		Stress and strain values at the ultimate point.
+	strengthCoefficient, strainHardeningExponent : float
+		Those are coefficients for the Hollomon's
+		equation during the plastic deformation. It
+		represents the hardening behavior of the
+		material.
+		Hollomon's equation:
+		:math:`\sigma = K \ \varepsilon^{n}`
+		being :math:`K` the strength coefficient
+		and  :math:`n` the strain hardening exponent.
+	elasticStrain, elasticStress : numpy.ndarray
+		Strain and stress data when the material
+		behaves elastically.
+	plasticStrain, plasticStress : numpy.ndarray
+		Strain and stress data when the material
+		behaves plastically.
+	neckingStrain, neckingStress : numpy.ndarray
+		Strain and stress data when the
+		necking starts at the material.
+	elasticModulus : float
+		Elastic modulus value.
+	resilienceModulus : float
+		Resilience modulus value. It is the energy
+		which the material absorbs per unit of volume
+		during its elastic deformation.
+	toughnessModulus : float
+		Resilience modulus value. It is the energy
+		which the material absorbs per unit of volume
+		until its failure.
+
+	See Also
+	--------
+	[Tensile testing wikipedia page](https://en.wikipedia.org/wiki/Tensile_testing)
+	[Stress-Strain curve wikipedia page](https://en.wikipedia.org/wiki/Stress%E2%80%93strain_curve)
+
+	Notes
+	-----
+	| Symbol | Description | Definition |
+	| --- | --- | --- |
+	| :math:`[F]`                          | force                               | input                                                               |
+	| :math:`[d]`                          | displacement                        | input                                                               |
+	| :math:`[t]`                          | time                                | input                                                               |
+	| :math:`l_0`                          | specimen length                     | input                                                               |
+	| :math:`D`                            | specimen diameter                   | input                                                               |
+	| :math:`A`                            | specimen cross section area         | :math:`A = \dfrac{\pi \ D^2}{4}`                                    |
+	| :math:`[\varepsilon]`                | strain                              | :math:`\varepsilon = \dfrac{l - l_0}{l_0} = \dfrac{d}{l_0}`         |
+	| :math:`[\sigma]`                     | stress                              | :math:`\sigma = \dfrac{F}{A}`                                       |
+	| :math:`[\varepsilon_r]`              | real strain                         | :math:`\varepsilon_r = ln(1 + \varepsilon)`                         |
+	| :math:`[\sigma_r]`                   | real stress                         | :math:`\sigma_r = \sigma \ (1 + \varepsilon)`                       |
+	| :math:`\varepsilon_{pr},\sigma_{pr}` | proportionality strain and strength | Algorithm defined                                                   |
+	| :math:`\varepsilon_y,\sigma_y`       | yield strain and strength           | Algorithm defined                                                   |
+	| :math:`\varepsilon_u,\sigma_u`       | ultimate strain and strength        | Algorithm defined                                                   |
+	| :math:`K`                            | strength coefficient                | Algorithm defined                                                   |
+	| :math:`n`                            | strain hardening exponent           | Algorithm defined                                                   |
+	| :math:`[\varepsilon_e]`              | elastic strain                      | :math:`[\varepsilon][                \varepsilon < \varepsilon_y]`  |
+	| :math:`[\sigma_p]`                   | plastic stress                      | :math:`[\sigma     ][                \varepsilon < \varepsilon_y]`  |
+	| :math:`[\varepsilon_n]`              | necking strain                      | :math:`[\varepsilon][\varepsilon_y < \varepsilon < \varepsilon_u]`  |
+	| :math:`[\sigma_e]`                   | elastic stress                      | :math:`[\sigma     ][\varepsilon_y < \varepsilon < \varepsilon_u]`  |
+	| :math:`[\varepsilon_p]`              | plastic strain                      | :math:`[\varepsilon][\varepsilon_u < \varepsilon                ]`  |
+	| :math:`[\sigma_n]`                   | necking stress                      | :math:`[\sigma     ][\varepsilon_u < \varepsilon                ]`  |
+	| :math:`E`                            | elastic modulus                     | :math:`\sigma = E \ \varepsilon`                                    |
+	| :math:`U_r`                          | resilience modulus                  | :math:`\displaystyle\int\limits_{[\varepsilon_e]}\sigma \mathrm{d}` |
+	| :math:`U_t`                          | toughness modulus                   | :math:`\displaystyle\int\limits_{[\varepsilon]}\sigma \mathrm{d}`   |
+	'''
 	def __init__(self, file, length, diameter):
 		self._readFromFile(file)
 		self._defineDimensions(length, diameter)
