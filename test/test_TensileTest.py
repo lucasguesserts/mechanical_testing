@@ -66,6 +66,17 @@ def test_ultimate_strength(tensile):
 	assert tensile.ultimateStrength == pytest.approx(951.30E+6, rel=1E-2)
 	return
 
+def test_correct_yield_point(dimensions):
+	tensile = mect.TensileTest(
+		'./test/data/tensile/tensile_steel_1045_deformation_using_machine.csv',
+		*dimensions,
+	)
+	assert tensile.proportionalityStrength  == pytest.approx(84.69E+6, rel=1E-2)
+	assert tensile.proportionalityStrain    == pytest.approx( 1.05E-2, rel=1E-2)
+	assert tensile.yieldStrain              == tensile.proportionalityStrain
+	assert tensile.yieldStrength            == tensile.proportionalityStrength
+	return
+
 def test_elastic_behavior(tensile):
 	assert tensile.elasticStrain[ 0] == pytest.approx(0.0)
 	assert tensile.elasticStress[ 0] == pytest.approx(0.0)
