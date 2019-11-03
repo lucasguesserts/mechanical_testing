@@ -211,6 +211,34 @@ class TensileTest:
 			y = [plastic stress]
 	'''
 	def __init__(self, file, length, diameter):
+		'''Process tensile data.
+
+		Parameters
+		----------
+		file : str
+			Path to file containing the data.
+			The data from the file is not
+			checked in any way. The file must
+			be in the comma-separated-value
+			format.
+		length : float
+			Length :math:`l_0` of the specimen
+			in meters.
+		diameter : float
+			Diameter :math:`D` of the specimen
+			in meters.
+
+		Examples
+		--------
+		>>> import mechanical_testing as mect
+		>>> tensile = mect.TensileTest(
+				file     = './test/data/tensile/tensile_steel_1045.csv,
+				length   = 75.00E-3,
+				diameter = 10.00E-3,
+		)
+		>>> tensile.yieldStrength
+		7.6522E+8
+		'''
 		self._readFromFile(file)
 		self._defineDimensions(length, diameter)
 		self._defineEngineeringCurve()
@@ -270,9 +298,36 @@ class TensileTest:
 		self.elasticModulus               = angularCoefficient
 		return
 
-	def offsetYieldPoint(self, n):
-		elasticLine = lambda n: self.elasticModulus * ( self.strain - n )
-		intersection = np.argwhere(self.stress - elasticLine(n) < 0).flatten()[0]
+	def offsetYieldPoint(self, offset):
+		'''Yield point defined by the input offset
+
+		Parameters
+		----------
+		offset : float
+			Offset value. For the common
+			yield point used in engineering,
+			use `offset = 0.002 = 0.2%`.
+
+		Returns
+		-------
+		(strain, stress) : (float, float)
+			Yield point equivalent to
+			the input offset.
+
+		See Also
+		--------
+		`Engineering yield point <https://en.wikipedia.org/wiki/Yield_%28engineering%29>`_
+
+		Notes
+		-----
+		The point is the intersection of the curves
+		:math:`(\epsilon, \sigma)`
+		and
+		:math:`(\epsilon, E\cdot(\epsilon - \Delta\epsilon))`
+		being :math:`\Delta\epsilon` the input offset.
+		'''
+		elasticLine = lambda offset: self.elasticModulus * ( self.strain - offset )
+		intersection = np.argwhere(self.stress - elasticLine(offset) < 0).flatten()[0]
 		return self.strain[intersection], self.stress[intersection]
 
 	def _defineYieldStrength(self):
@@ -345,6 +400,16 @@ class TensileTest:
 		return
 
 	def summaryOfProperties(self):
+		'''Summarize the material properties.
+
+		Returns
+		-------
+		summaryOfProperties : pandas.DataFrame
+			Dataframe with three columns:
+			`Property`, `Value`, `Unit`,
+			each one with the respective material
+			property data.
+		'''
 		return pd.DataFrame(
 			columns = ['Property', 'Value', 'Unit'],
 			data = [
@@ -362,14 +427,43 @@ class TensileTest:
 			],
 		)
 
-	def saveSummaryOfProperties(self, fileName):
+	def saveSummaryOfProperties(self, filePath):
+		'''Save summary of the material properties to a file.
+
+		Parameters
+		----------
+		filePath : str
+			Path to where the file will be saved.
+			The file will be saved in the
+			comma-separated-values format.
+		'''
 		self.summaryOfProperties().to_csv(
-			path_or_buf = fileName,
+			path_or_buf = filePath,
 			index = False,
 		)
 		return
 
-	def plot(self, title, fileName):
+	def plot(self, title, filePath):
+		'''Save a figure of the stress-strain curve.
+
+		Data included in the figure:
+
+		- Stress-Strain curve.
+		- Elastic curve.
+		- Plastic curve.
+		- Necking curve.
+		- Proportionality limit point.
+		- Yield point.
+		- Ultimate point.
+		- Linearized elastic curve.
+
+		Parameters
+		----------
+		title : str
+			Title for the figure.
+		filePath : str
+			Path to where whe figure will be saved.
+		'''
 		fig = plt.figure(figsize=(8,8))
 		ax = fig.add_subplot(1,1,1)
 		# Relevant Regions
@@ -395,11 +489,32 @@ class TensileTest:
 		ax.grid(which='minor', axis='y', linestyle='--', color='gray', alpha=0.50)
 		# Save
 		fig.tight_layout()
-		fig.savefig(fileName)
+		fig.savefig(filePath)
 		plt.close(fig)
 		return
 
-	def plotRealCurve(self, title, fileName):
+	def plotRealCurve(self, title, filePath):
+		'''Save a figure of the real stress-strain curve.
+
+		Data included in the figure:
+
+		- Real stress-Strain curve.
+		- Real elastic curve.
+		- Real plastic curve.
+		- Real necking curve.
+		- Real proportionality limit point.
+		- Real yield point.
+		- Real ultimate point.
+		- Real linearized elastic curve.
+		- Hollomon's equation fitted in the elastic curve.
+
+		Parameters
+		----------
+		title : str
+			Title for the figure.
+		filePath : str
+			Path to where whe figure will be saved.
+		'''
 		fig = plt.figure(figsize=(8,8))
 		ax = fig.add_subplot(1,1,1)
 		def ax_plot(strain, stress, **kwargs):
@@ -432,6 +547,6 @@ class TensileTest:
 		ax.grid(which='minor', axis='y', linestyle='--', color='gray', alpha=0.50)
 		# Save
 		fig.tight_layout()
-		fig.savefig(fileName)
+		fig.savefig(filePath)
 		plt.close(fig)
 		return
