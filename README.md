@@ -1,19 +1,19 @@
 # Mechanical Testing
 
-![Travis (.org) branch](https://img.shields.io/travis/lucasguesserts/mechanical_testing/master?label=Master)
-![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/master?label=Master%20coverage)
+![Travis (.org) branch](https://img.shields.io/travis/lucasguesserts/mechanical_testing/master?label=build)
+![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/master?label=coverage)
 ![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lucasguesserts/mechanical_testing?label=LGTM%20alerts)
 ![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/lucasguesserts/mechanical_testing)
-
-![Travis (.org) branch](https://img.shields.io/travis/lucasguesserts/mechanical_testing/develop?label=Develop)
 
 Set of tools for processing the data of mechanical testings.
 
 ## Requirements
 
-| Library                           | Version |
-| :-------------------------------: | :-----: |
-| [Python](https://www.python.org/) | 3.7.3   |
+Check the [requirements](./setup.py) for more information.
+
+If you intend to use for development,
+check the
+[conda requirements](./mechanical_testing_requirements.txt)
 
 ## Installation
 
