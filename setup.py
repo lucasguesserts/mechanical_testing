@@ -15,5 +15,6 @@ setup(
         'scipy',
         'matplotlib',
         'pandas',
+        'sphinx',
     ]
 )
