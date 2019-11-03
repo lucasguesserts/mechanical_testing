@@ -179,6 +179,36 @@ class TensileTest:
 		* - :math:`U_t`
  		  - toughness modulus
  		  - :math:`\displaystyle\int\limits_{[\epsilon]}\sigma \ \mathrm{d}\epsilon`
+
+	**Auto-find proportionality limit and elastic modulus**::
+
+		foreach l in range(10, len(strain)):
+			fit a one-degree polynomial to the data
+			store the linear coefficient
+			store the curve fit residual
+		select the proportionality limit point as the one with the smallest residual
+		select the elastic modulus as the linear coefficient of the polynomial
+
+	**Ultimate point**::
+
+		Select the ultimate point as the one
+		with the maximum stress
+
+	**Yield point**::
+
+		select the yield point as the intersection of the curves:
+			([strain], [stress])
+			([strain], elasticModulus * ([strain]-0.002))
+		if the point has strain larger than the ultimate point:
+			select the yield point as equals to the
+			proportionality limit point
+
+	**Hardening, strength coefficient and strain hardening exponent**::
+
+		Curve fit (Hollomon's equation):
+			f = K * strain**n
+			x = [plastic strain]
+			y = [plastic stress]
 	'''
 	def __init__(self, file, length, diameter):
 		self._readFromFile(file)
