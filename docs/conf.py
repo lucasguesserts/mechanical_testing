@@ -21,7 +21,7 @@ pygments_style = 'sphinx'
 todo_include_todos = False
 
 # --- HTML options ---
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 html_sidebars = {
     '**': [
         'about.html',

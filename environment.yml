@@ -84,6 +84,7 @@ dependencies:
   - six=1.12.0=py37_0
   - snowballstemmer=2.0.0=py_0
   - sphinx=2.2.1=py_0
+  - sphinx_rtd_theme=0.4.3=py_0
   - sphinxcontrib-applehelp=1.0.1=py_0
   - sphinxcontrib-devhelp=1.0.1=py_0
   - sphinxcontrib-htmlhelp=1.0.2=py_0

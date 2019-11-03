@@ -1,7 +1,7 @@
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
 SPHINXPROJ    = mechanical_testing
-SOURCEDIR     = doc_code
+SOURCEDIR     = docs
 BUILDDIR      = build
 
 help:
