@@ -15,8 +15,8 @@ class TensileTest:
 	in order to deliver the material
 	properties.
 
-	Warning
-	-------
+	Warnings
+	--------
 	All values are meant to be in the SI
 	units. Since no unit conversion is made,
 	the input data has to be in the SI
@@ -43,7 +43,7 @@ class TensileTest:
 		specimen.
 	strain : numpy.ndarray
 		Strain data of the tensile test.
-		:math:`\varepsilon = \dfrac{l - l_0}{l_0} = \dfrac{d}{l_0}`
+		:math:`\epsilon = \dfrac{l - l_0}{l_0} = \dfrac{d}{l_0}`
 		being :math:`l_0` the initial length.
 	stress : numpy.ndarray
 		Stress data of the tensile test.
@@ -52,10 +52,10 @@ class TensileTest:
 		:math:`A` the cross section area.
 	realStrain : numpy.ndarray
 		Strain for the real curve.
-		:math:`\varepsilon_{real} = ln(1 + \varepsilon).
+		:math:`\epsilon_r = ln(1 + \epsilon)`.
 	realStress : numpy.ndarray
 		Stress for the real curve.
-		:math:`\sigma_{real} = \sigma \ (1 + \varepsilon).
+		:math:`\sigma_r = \sigma \ (1 + \epsilon)`.
 	proportionalityStrain, proportionalityStrength : float
 		Stress and strain values at the proportionality
 		limit point.
@@ -69,7 +69,7 @@ class TensileTest:
 		represents the hardening behavior of the
 		material.
 		Hollomon's equation:
-		:math:`\sigma = K \ \varepsilon^{n}`
+		:math:`\sigma = K \ \epsilon^{n}`
 		being :math:`K` the strength coefficient
 		and  :math:`n` the strain hardening exponent.
 	elasticStrain, elasticStress : numpy.ndarray
@@ -94,37 +94,91 @@ class TensileTest:
 
 	See Also
 	--------
-	[Tensile testing wikipedia page](https://en.wikipedia.org/wiki/Tensile_testing)
-	[Stress-Strain curve wikipedia page](https://en.wikipedia.org/wiki/Stress%E2%80%93strain_curve)
+	`Tensile testing wikipedia page <https://en.wikipedia.org/wiki/Tensile_testing>`_
+
+	`Stress-Strain curve wikipedia page <https://en.wikipedia.org/wiki/Stress%E2%80%93strain_curve>`_
 
 	Notes
 	-----
-	| Symbol | Description | Definition |
-	| --- | --- | --- |
-	| :math:`[F]`                          | force                               | input                                                               |
-	| :math:`[d]`                          | displacement                        | input                                                               |
-	| :math:`[t]`                          | time                                | input                                                               |
-	| :math:`l_0`                          | specimen length                     | input                                                               |
-	| :math:`D`                            | specimen diameter                   | input                                                               |
-	| :math:`A`                            | specimen cross section area         | :math:`A = \dfrac{\pi \ D^2}{4}`                                    |
-	| :math:`[\varepsilon]`                | strain                              | :math:`\varepsilon = \dfrac{l - l_0}{l_0} = \dfrac{d}{l_0}`         |
-	| :math:`[\sigma]`                     | stress                              | :math:`\sigma = \dfrac{F}{A}`                                       |
-	| :math:`[\varepsilon_r]`              | real strain                         | :math:`\varepsilon_r = ln(1 + \varepsilon)`                         |
-	| :math:`[\sigma_r]`                   | real stress                         | :math:`\sigma_r = \sigma \ (1 + \varepsilon)`                       |
-	| :math:`\varepsilon_{pr},\sigma_{pr}` | proportionality strain and strength | Algorithm defined                                                   |
-	| :math:`\varepsilon_y,\sigma_y`       | yield strain and strength           | Algorithm defined                                                   |
-	| :math:`\varepsilon_u,\sigma_u`       | ultimate strain and strength        | Algorithm defined                                                   |
-	| :math:`K`                            | strength coefficient                | Algorithm defined                                                   |
-	| :math:`n`                            | strain hardening exponent           | Algorithm defined                                                   |
-	| :math:`[\varepsilon_e]`              | elastic strain                      | :math:`[\varepsilon][                \varepsilon < \varepsilon_y]`  |
-	| :math:`[\sigma_p]`                   | plastic stress                      | :math:`[\sigma     ][                \varepsilon < \varepsilon_y]`  |
-	| :math:`[\varepsilon_n]`              | necking strain                      | :math:`[\varepsilon][\varepsilon_y < \varepsilon < \varepsilon_u]`  |
-	| :math:`[\sigma_e]`                   | elastic stress                      | :math:`[\sigma     ][\varepsilon_y < \varepsilon < \varepsilon_u]`  |
-	| :math:`[\varepsilon_p]`              | plastic strain                      | :math:`[\varepsilon][\varepsilon_u < \varepsilon                ]`  |
-	| :math:`[\sigma_n]`                   | necking stress                      | :math:`[\sigma     ][\varepsilon_u < \varepsilon                ]`  |
-	| :math:`E`                            | elastic modulus                     | :math:`\sigma = E \ \varepsilon`                                    |
-	| :math:`U_r`                          | resilience modulus                  | :math:`\displaystyle\int\limits_{[\varepsilon_e]}\sigma \mathrm{d}` |
-	| :math:`U_t`                          | toughness modulus                   | :math:`\displaystyle\int\limits_{[\varepsilon]}\sigma \mathrm{d}`   |
+	.. list-table:: Title
+		:widths: 5 25 15
+		:header-rows: 1
+
+		* - Symbol
+		  - Description
+		  - Definition
+		* - :math:`[F]`
+ 		  - force
+ 		  - input
+		* - :math:`[d]`
+ 		  - displacement
+ 		  - input
+		* - :math:`[t]`
+ 		  - time
+ 		  - input
+		* - :math:`l_0`
+ 		  - specimen length
+ 		  - input
+		* - :math:`D`
+ 		  - specimen diameter
+ 		  - input
+		* - :math:`A`
+ 		  - specimen cross section area
+ 		  - :math:`A = \dfrac{\pi \ D^2}{4}`
+		* - :math:`[\epsilon]`
+ 		  - strain
+ 		  - :math:`\epsilon = \dfrac{l - l_0}{l_0} = \dfrac{d}{l_0}`
+		* - :math:`[\sigma]`
+ 		  - stress
+ 		  - :math:`\sigma = \dfrac{F}{A}`
+		* - :math:`[\epsilon_r]`
+ 		  - real strain
+ 		  - :math:`\epsilon_r = ln(1 + \epsilon)`
+		* - :math:`[\sigma_r]`
+ 		  - real stress
+ 		  - :math:`\sigma_r = \sigma \ (1 + \epsilon)`
+		* - :math:`\epsilon_{pr},\sigma_{pr}`
+ 		  - proportionality strain and strength
+ 		  - algorithm defined
+		* - :math:`\epsilon_y,\sigma_y`
+ 		  - yield strain and strength
+ 		  - algorithm defined
+		* - :math:`\epsilon_u,\sigma_u`
+ 		  - ultimate strain and strength
+ 		  - algorithm defined
+		* - :math:`K`
+ 		  - strength coefficient
+ 		  - algorithm defined
+		* - :math:`n`
+ 		  - strain hardening exponent
+ 		  - algorithm defined
+		* - :math:`[\epsilon_e]`
+ 		  - elastic strain
+ 		  - :math:`[\epsilon][\epsilon < \epsilon_y]`
+		* - :math:`[\sigma_e]`
+ 		  - elastic stress
+ 		  - :math:`[\sigma][\epsilon < \epsilon_y]`
+		* - :math:`[\epsilon_p]`
+ 		  - plastic strain
+ 		  - :math:`[\epsilon][\epsilon_y < \epsilon < \epsilon_u]`
+		* - :math:`[\sigma_p]`
+ 		  - plastic stress
+ 		  - :math:`[\sigma][\epsilon_y < \epsilon < \epsilon_u]`
+		* - :math:`[\epsilon_n]`
+ 		  - necking strain
+ 		  - :math:`[\epsilon][\epsilon_u < \epsilon]`
+		* - :math:`[\sigma_n]`
+ 		  - necking stress
+ 		  - :math:`[\sigma][\epsilon_u < \epsilon]`
+		* - :math:`E`
+ 		  - elastic modulus
+ 		  - :math:`\sigma = E \ \epsilon`, curve fit
+		* - :math:`U_r`
+ 		  - resilience modulus
+ 		  - :math:`\displaystyle\int\limits_{[\epsilon_e]}\sigma \ \mathrm{d}\epsilon`
+		* - :math:`U_t`
+ 		  - toughness modulus
+ 		  - :math:`\displaystyle\int\limits_{[\epsilon]}\sigma \ \mathrm{d}\epsilon`
 	'''
 	def __init__(self, file, length, diameter):
 		self._readFromFile(file)
