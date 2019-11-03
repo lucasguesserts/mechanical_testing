@@ -4,6 +4,7 @@
 ![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/master?label=coverage)
 ![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lucasguesserts/mechanical_testing?label=LGTM%20alerts)
 ![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/lucasguesserts/mechanical_testing)
+[![Documentation Status](https://readthedocs.org/projects/mechanical-testing/badge/?version=latest)](https://mechanical-testing.readthedocs.io/en/latest/?badge=latest)
 
 Set of tools for processing the data of mechanical testings.
 
@@ -44,3 +45,8 @@ Would you like to help me improving this code? Check out [how to contribute](./C
 ## Contact
 
 Do you want to contact the guy who wrote that code? Write an e-mail to <lucasguesserts@gmail.com>.
+
+## Documentation
+
+Documentation is build in [read the docs](https://readthedocs.org/) and it is
+available [here](https://mechanical-testing.readthedocs.io).
