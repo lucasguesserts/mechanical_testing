@@ -8,3 +8,4 @@ scripts/*
 !scripts/*.py
 .coverage
 *build*
+dist/*
