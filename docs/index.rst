@@ -6,18 +6,10 @@ Introduction
 ############
 .. automodule:: mechanical_testing
 
-#######
-Content
-#######
+Contents:
 
 .. toctree::
    :maxdepth: 2
+   :glob:
 
-   TensileTest
-
-##########################
-Mechanical Testing Classes
-##########################
-
-.. autosummary::
-   TensileTest
+   *
