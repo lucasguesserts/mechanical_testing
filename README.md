@@ -13,8 +13,8 @@ Set of tools for processing the data of mechanical testings.
 Check the [requirements](./setup.py) for more information.
 
 If you intend to use for development,
-check the
-[conda requirements](./mechanical_testing_requirements.txt)
+check the [conda environment](./environment.yml)
+used for the project.
 
 ## Installation
 
