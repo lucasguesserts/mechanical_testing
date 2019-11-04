@@ -5,6 +5,8 @@
 [![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lucasguesserts/mechanical_testing?label=LGTM%20alerts)](https://lgtm.com/projects/g/lucasguesserts/mechanical_testing/?mode=list)
 [![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/lucasguesserts/mechanical_testing)](https://lgtm.com/projects/g/lucasguesserts/mechanical_testing/context:python)
 [![Documentation Status](https://readthedocs.org/projects/mechanical-testing/badge/?version=latest)](https://mechanical-testing.readthedocs.io/en/latest/?badge=latest)
+[![PyPI - Wheel](https://img.shields.io/pypi/wheel/mechanical-testing?label=PyPI%20wheel)](https://pypi.org/project/mechanical-testing/)
+[![PyPI - License](https://img.shields.io/pypi/l/mechanical-testing)](https://choosealicense.com/licenses/mit/)
 
 Set of tools for processing the data of mechanical testings.
 
