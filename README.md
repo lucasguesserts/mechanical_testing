@@ -4,7 +4,7 @@
 ![Codecov branch](https://img.shields.io/codecov/c/github/lucasguesserts/mechanical_testing/master?label=coverage)
 ![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lucasguesserts/mechanical_testing?label=LGTM%20alerts)
 ![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/lucasguesserts/mechanical_testing)
-[![Documentation Status](https://readthedocs.org/projects/mechanical-testing/badge/?version=latest)](https://mechanical-testing.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/mechanical-testing/badge/?version=read_the_docs)](https://mechanical-testing.readthedocs.io/en/latest/?badge=read_the_docs)
 
 Set of tools for processing the data of mechanical testings.
 

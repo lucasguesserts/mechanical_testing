@@ -1,3 +1,6 @@
+import sys, os
+sys.path.insert(0, os.path.abspath('../'))
+
 # --- Project information
 project = 'mechanical_testing'
 copyright = '2019, Lucas Guesser Targino da Silva'
