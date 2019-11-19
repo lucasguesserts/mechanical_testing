@@ -12,13 +12,19 @@ experimentalDataDir = '../test/data/tensile/'
 # Save directory
 os.makedirs(saveDir, exist_ok=True)
 
-# Files
-experimentFiles = os.listdir(experimentalDataDir)
+# Files and dimensions
+files_lengths_diameters = [
+    ['compression_polyacetal', 40.00E-3, 40.00E-3],
+    ['tensile_steel_1045', 75.00E-3, 10.00E-3],
+    ['tensile_steel_4130', 75.00E-3, 10.00E-3],
+    ['compression_steel_1045', 25.00E-3, 10.00E-3],
+    ['tensile_steel_1045_deformation_using_machine', 75.00E-3, 10.00E-3],
+    ['tensile_steel_4130_deformation_using_machine', 75.00E-3, 10.00E-3],
+]
 
 # Tensile test analysis
-for experimentFile in experimentFiles:
-    rootName = experimentFile.split('/')[-1].replace('.csv','')
-    tensile = mect.TensileTest(experimentalDataDir+experimentFile, length, diameter)
+for rootName, length, diameter in files_lengths_diameters:
+    tensile = mect.TensileTest(experimentalDataDir+rootName+'.csv', length, diameter)
     tensile.plot(rootName, saveDir+rootName+'.png')
     tensile.plotRealCurve(rootName, saveDir+rootName+'_real_curve'+'.png')
     tensile.saveSummaryOfProperties(saveDir+rootName+'.csv')

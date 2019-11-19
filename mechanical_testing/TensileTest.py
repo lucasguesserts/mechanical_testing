@@ -326,9 +326,14 @@ class TensileTest:
 		:math:`(\epsilon, E\cdot(\epsilon - \Delta\epsilon))`
 		being :math:`\Delta\epsilon` the input offset.
 		'''
-		elasticLine = lambda offset: self.elasticModulus * ( self.strain - offset )
-		intersection = np.argwhere(self.stress - elasticLine(offset) < 0).flatten()[0]
-		return self.strain[intersection], self.stress[intersection]
+		try:
+			elasticLine = lambda offset: self.elasticModulus * ( self.strain - offset )
+			intersection = np.argwhere(self.stress - elasticLine(offset) < 0).flatten()[0]
+			offsetYieldPoint = [ self.strain[intersection], self.stress[intersection] ]
+		except IndexError:
+			# It is raised when a intersection is not found
+			offsetYieldPoint = [0, 0]
+		return offsetYieldPoint
 
 	def _defineYieldStrength(self):
 		self.yieldStrain, self.yieldStrength = self.offsetYieldPoint(0.2E-2)
@@ -342,6 +347,10 @@ class TensileTest:
 
 	def _correctYieldStrength(self):
 		if self.yieldStrain > self.ultimateStrain:
+			self.yieldStrain   = self.proportionalityStrain
+			self.yieldStrength = self.proportionalityStrength
+			warnings.warn('Yield strength corrected in file \"{:s}\"'.format(self.originalFile))
+		elif self.yieldStrain < self.proportionalityStrain:
 			self.yieldStrain   = self.proportionalityStrain
 			self.yieldStrength = self.proportionalityStrength
 			warnings.warn('Yield strength corrected in file \"{:s}\"'.format(self.originalFile))
@@ -535,8 +544,8 @@ class TensileTest:
 		ax_plot(self.elasticStrain, np.polyval([self.elasticModulus,0], self.elasticStrain), linestyle='-.', color='gray', label='Elastic\nCurve Fit')
 		ax.plot(100*np.log(1+self.plasticStrain), self.strengthCoefficient*np.log(1+self.plasticStrain)**self.strainHardeningExponent/1E+6, linestyle='--', color='gray', label='Hollomon\'s\nCurve Fit')
 		# Layout
-		ax.set_xlim([0, 1.45*np.amax(100*self.strain)])
-		ax.set_ylim([0, 1.1*self.ultimateStrength/1E+6])
+		ax.set_xlim([0, 1.45*100*np.log(1 + np.amax(self.strain))])
+		ax.set_ylim([0, 1.1*(self.ultimateStrength * (1 + self.ultimateStrain))/1E+6])
 		ax.set_xlabel('Strain [%]')
 		ax.set_ylabel('Stress [MPa]')
 		ax.legend(loc='upper right')
